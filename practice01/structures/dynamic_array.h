@@ -1,0 +1,10 @@
+#ifndef PRACTICE01_DYNAMIC_ARRAY_H
+#define PRACTICE01_DYNAMIC_ARRAY_H
+
+
+class DArray {
+
+};
+
+
+#endif //PRACTICE01_DYNAMIC_ARRAY_H

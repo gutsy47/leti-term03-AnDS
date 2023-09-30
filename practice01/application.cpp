@@ -26,6 +26,7 @@ bool inputNumber(NumType &variable, bool isSpaceSep = false, bool isUnsigned = f
     return true;
 }
 
+
 /**
  * Executes the program
  * @return 0 if correct exit
@@ -33,10 +34,46 @@ bool inputNumber(NumType &variable, bool isSpaceSep = false, bool isUnsigned = f
 int TApplication::execute() {
 
     std::cout.setf(std::ios::boolalpha);
-    std::cout << "Enter 'h' to get list of commands\n";
 
     char userChoice;
+    while (true) {
+        std::cout << "Choose the structure:\n";
+        std::cout << "1. Doubly-linked list\n";
+        std::cout << "2. Dynamic array\n";
+        std::cout << "3. Stack\n";
+
+        // Get command from the keyboard
+        if (!menu(userChoice)) continue; // Error occurred
+        if (userChoice == '0') break;       // Exit command
+        system("cls");
+
+        // Execute sub thread
+        if (userChoice == '1') {
+            std::cout << "List thread executed. Enter 'h' to get list of commands\n";
+            executeList();
+        } else if (userChoice == '2') {
+            std::cout << "Dynamic array thread executed. Enter 'h' to get list of commands\n";
+            executeDArr();
+        }
+        else if (userChoice == '3') {
+            std::cout << "Stack thread executed. Enter 'h' to get list of commands\n";
+            executeStack();
+        } else {
+            std::cout << "RuntimeError. Unknown command\n";
+        }
+
+        system("cls");
+    }
+
+    return 0;
+}
+
+
+/// Execute the list thread
+int TApplication::executeList() {
+    char userChoice;
     List list;
+
     while (true) {
         // Get command from the keyboard
         if (!menu(userChoice)) continue; // Error occurred
@@ -161,17 +198,142 @@ int TApplication::execute() {
             }
 
             // Help menu
-            case 'h':
-                help();
+            case 'h': {
+                helpList();
                 break;
+            }
 
             // Runtime error. Unknown command
             default: std::cout << "RuntimeError. Unknown command\n";
         }
         system("pause");
     }
+
     return 0;
 }
+
+
+/// Execute the dynamic array thread
+int TApplication::executeDArr() {
+    char userChoice;
+    DArray arr;
+
+    while (true) {
+        // Get command from the keyboard
+        if (!menu(userChoice)) continue; // Error occurred
+        if (userChoice == '0') break;
+
+        // Execute
+        switch (userChoice) {
+            // Do smh
+            case '1': {
+                break;
+            }
+
+            // Help menu
+            case 'h': {
+                helpDArr();
+                break;
+            }
+
+            // Runtime error. Unknown command
+            default: std::cout << "Runtime error. Unknown command\n";
+        }
+        system("pause");
+    }
+
+    return 0;
+}
+
+
+/// Execute the dynamic array thread
+int TApplication::executeStack() {
+    char userChoice;
+    Stack stack;
+
+    while (true) {
+        // Get command from the keyboard
+        if (!menu(userChoice)) continue; // Error occurred
+        if (userChoice == '0') break;
+
+        // Execute
+        switch (userChoice) {
+            // Do smh
+            case '1': {
+                break;
+            }
+
+            // Help menu
+            case 'h': {
+                helpStack();
+                break;
+            }
+
+            // Runtime error. Unknown command
+            default: std::cout << "Runtime error. Unknown command\n";
+        }
+        system("pause");
+    }
+
+    return 0;
+}
+
+/// Print available List commands
+void TApplication::helpList() {
+    std::cout << "Available commands:\n";
+    std::cout << std::setw(32) << std::setfill('-') << '\n';
+    std::cout << "h: Help (this menu)\n";
+    std::cout << std::setw(32) << std::setfill('-') << '\n';
+    std::cout << "1: Create the list\n";
+    std::cout << "2: Print the list\n";
+    std::cout << "3: Find element\n";
+    std::cout << "4: Add new node\n";
+    std::cout << "5: Delete existing node\n";
+    std::cout << "6: Swap two elements\n";
+    std::cout << std::setw(32) << std::setfill('-') << '\n';
+    std::cout << "0: Exit\n";
+    std::cout << std::setw(32) << std::setfill('-') << '\n';
+    std::cout << std::setfill(' ');
+}
+
+
+/// Print available Dynamic Array commands
+void TApplication::helpDArr() {
+    std::cout << "Available commands:\n";
+    std::cout << std::setw(32) << std::setfill('-') << '\n';
+    std::cout << "h: Help (this menu)\n";
+    std::cout << std::setw(32) << std::setfill('-') << '\n';
+    std::cout << "1: \n";
+    std::cout << "2: \n";
+    std::cout << "3: \n";
+    std::cout << "4: \n";
+    std::cout << "5: \n";
+    std::cout << "6: \n";
+    std::cout << std::setw(32) << std::setfill('-') << '\n';
+    std::cout << "0: Exit\n";
+    std::cout << std::setw(32) << std::setfill('-') << '\n';
+    std::cout << std::setfill(' ');
+}
+
+
+/// Print available Dynamic Array commands
+void TApplication::helpStack() {
+    std::cout << "Available commands:\n";
+    std::cout << std::setw(32) << std::setfill('-') << '\n';
+    std::cout << "h: Help (this menu)\n";
+    std::cout << std::setw(32) << std::setfill('-') << '\n';
+    std::cout << "1: \n";
+    std::cout << "2: \n";
+    std::cout << "3: \n";
+    std::cout << "4: \n";
+    std::cout << "5: \n";
+    std::cout << "6: \n";
+    std::cout << std::setw(32) << std::setfill('-') << '\n';
+    std::cout << "0: Exit\n";
+    std::cout << std::setw(32) << std::setfill('-') << '\n';
+    std::cout << std::setfill(' ');
+}
+
 
 /**
  * Prints the menu of commands and reads the user action input via cin
@@ -190,22 +352,4 @@ bool TApplication::menu(char &userChoice) {
         return false;
     }
     return true;
-}
-
-/// Prints available commands
-void TApplication::help() {
-    std::cout << "Available commands:\n";
-    std::cout << std::setw(32) << std::setfill('-') << '\n';
-    std::cout << "h: Help (this menu)\n";
-    std::cout << std::setw(32) << std::setfill('-') << '\n';
-    std::cout << "1: Create the list\n";
-    std::cout << "2: Print the list\n";
-    std::cout << "3: Find element\n";
-    std::cout << "4: Add new node\n";
-    std::cout << "5: Delete existing node\n";
-    std::cout << "6: Swap two elements\n";
-    std::cout << std::setw(32) << std::setfill('-') << '\n';
-    std::cout << "0: Exit\n";
-    std::cout << std::setw(32) << std::setfill('-') << '\n';
-    std::cout << std::setfill(' ');
 }

@@ -12,6 +12,10 @@ struct Node {
 
 
 class List {
+private:
+    struct Node *_head = nullptr;
+    struct Node *_tail = nullptr;
+    unsigned _size = 0;
 public:
     // Constructors and destructor
     List();
@@ -33,10 +37,6 @@ public:
     void swap(unsigned, unsigned);
     [[nodiscard]] unsigned getSize() const;
     [[nodiscard]] bool isEmpty() const;
-private:
-    struct Node *_head = nullptr;
-    struct Node *_tail = nullptr;
-    unsigned _size = 0;
 };
 
 

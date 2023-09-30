@@ -41,9 +41,29 @@ int TApplication::execute() {
         if (!menu(userChoice)) continue; // Error occurred
         if (userChoice == '0') break;       // Exit command
 
+        List list;
+
         // Execute
         switch (userChoice) {
             case '1': {
+                // Get values
+                int size;
+                std::cout << "<< Enter the size of the list:\n>> ";
+                if (!inputNumber<int>(size, true, true)) break;
+                int values[size];
+                std::cout << "<< Enter " << size << " elements separated by space:\n>> ";
+                for (auto &el: values)
+                    if (!inputNumber<int>(el)) break;
+
+                std::cout << "array: ";
+                for (auto &el : values)
+                    std::cout << el << ' ';
+                std::cout << std::endl;
+
+                // Create the list
+                list = List(size, values);
+                std::cout << "Created list: " << list << std::endl;
+
                 break;
             }
 
@@ -85,7 +105,7 @@ void TApplication::help() {
     std::cout << std::setw(32) << std::setfill('-') << '\n';
     std::cout << "h: Help (this menu)\n";
     std::cout << std::setw(32) << std::setfill('-') << '\n';
-    std::cout << "1: Do something\n";
+    std::cout << "1: Create the list\n";
     std::cout << std::setw(32) << std::setfill('-') << '\n';
     std::cout << "0: Exit\n";
     std::cout << std::setw(32) << std::setfill('-') << '\n';

@@ -148,8 +148,9 @@ int TApplication::execute() {
             // Swap two elements
             case '6': {
                 unsigned index1, index2;
-                std::cout << "Enter two indexes, separated by space:\n>> ";
+                std::cout << "<< Enter 1st index:\n>> ";
                 if (!inputNumber(index1, true, true)) break;
+                std::cout << "<< Enter 2nd index:\n>> ";
                 if (!inputNumber(index2, true, true)) break;
 
                 list.swap(index1, index2);

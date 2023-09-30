@@ -199,8 +199,34 @@ void List::remove(unsigned index) {
 
 
 /// Swap two nodes by their indexes
-void List::swap(unsigned ind1, unsigned ind2) {
+void List::swap(unsigned i1, unsigned i2) {
+    // (Empty || 1 element || Same indexes) => no swap
+    if (isEmpty() || _head == _tail || i1 == i2) return;
 
+    // 1st index less than 2nd one
+    if (i1 > i2) std::swap(i1, i2);
+
+    // Get nodes. If not found -> return
+    struct Node *node1 = get(i1);
+    struct Node *node2 = get(i2);
+    if (!node1 || !node2) return;
+
+    // If node1 is the head one, update the head to node2
+    if (node1 == _head) _head = node2;
+
+    // Update 'next' elements and update the 'prev' pointers of the 'next' nodes if exist
+    struct Node *temp = node1->next;
+    node1->next = node2->next;
+    node2->next = temp;
+    if (node1->next) node1->next->prev = node1;
+    if (node2->next) node2->next->prev = node2;
+
+    // Update 'prev' elements and update the 'next' pointers of the 'prev' nodes if exist
+    temp = node1->prev;
+    node1->prev = node2->prev;
+    node2->prev = temp;
+    if (node1->prev) node1->prev->next = node1;
+    if (node2->prev) node2->prev->next = node2;
 }
 
 

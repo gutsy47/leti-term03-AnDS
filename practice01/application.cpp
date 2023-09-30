@@ -258,8 +258,26 @@ int TApplication::executeStack() {
 
         // Execute
         switch (userChoice) {
-            // Do smh
+            // Push back
             case '1': {
+                std::string input;
+                std::cout << "<< Enter a string to push back:\n>> ";
+                getline (std::cin, input);
+                stack.push(input);
+                std::cout << "Updated stack: " << stack << std::endl;
+                break;
+            }
+
+            // Pop element
+            case '2': {
+                std::cout << stack.pop() << std::endl;
+                std::cout << "Updated stack: " << stack << std::endl;
+                break;
+            }
+
+            // Print stack
+            case '3': {
+                std::cout << stack << " (size = " << stack.getSize() << ")\n";
                 break;
             }
 
@@ -322,12 +340,9 @@ void TApplication::helpStack() {
     std::cout << std::setw(32) << std::setfill('-') << '\n';
     std::cout << "h: Help (this menu)\n";
     std::cout << std::setw(32) << std::setfill('-') << '\n';
-    std::cout << "1: \n";
-    std::cout << "2: \n";
-    std::cout << "3: \n";
-    std::cout << "4: \n";
-    std::cout << "5: \n";
-    std::cout << "6: \n";
+    std::cout << "1: Push back\n";
+    std::cout << "2: Pop element\n";
+    std::cout << "3: Print stack\n";
     std::cout << std::setw(32) << std::setfill('-') << '\n';
     std::cout << "0: Exit\n";
     std::cout << std::setw(32) << std::setfill('-') << '\n';

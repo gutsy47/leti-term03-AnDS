@@ -36,15 +36,15 @@ int TApplication::execute() {
     std::cout << "Enter 'h' to get list of commands\n";
 
     char userChoice;
+    List list;
     while (true) {
         // Get command from the keyboard
         if (!menu(userChoice)) continue; // Error occurred
         if (userChoice == '0') break;       // Exit command
 
-        List list;
-
         // Execute
         switch (userChoice) {
+            // Create list
             case '1': {
                 // Get values
                 int size;
@@ -55,14 +55,106 @@ int TApplication::execute() {
                 for (auto &el: values)
                     if (!inputNumber<int>(el)) break;
 
-                std::cout << "array: ";
-                for (auto &el : values)
-                    std::cout << el << ' ';
-                std::cout << std::endl;
-
                 // Create the list
                 list = List(size, values);
                 std::cout << "Created list: " << list << std::endl;
+
+                break;
+            }
+
+            // Print list
+            case '2': {
+                std::cout << list << "(size = " << list.getSize() << ")\n";
+                break;
+            }
+
+            // Find element
+            case '3': {
+                // Get user choice
+                int choice;
+                std::cout << "<< Choose the way of search: '1' to search by index and '2' to search by value:\n>> ";
+                if (!inputNumber(choice, true, true)) break;
+
+                // Search
+                if (choice == 1) {
+                    unsigned index;
+                    std::cout << "<< Enter the index:\n>> ";
+                    if (!inputNumber(index, true, true)) break;
+
+                    struct Node *element = list.get(index);
+                    if (element) std::cout << "Element " << element->value << " found\n";
+                    else std::cout << "Element not found\n";
+                } else if (choice == 2) {
+                    int value;
+                    std::cout << "Enter the value:\n>> ";
+                    if (!inputNumber(value, true, false)) break;
+
+                    int index = list.find(value);
+                    if (index != -1) std::cout << "Element found. Index: " << index << std::endl;
+                    else std::cout << "Element not found\n";
+                } else {
+                    std::cout << "InputError: Unknown command '" << choice << "'\n";
+                }
+
+                break;
+            }
+
+            // Add new node
+            case '4': {
+                // Get user choice
+                int choice;
+                std::cout << "<< Choose the way of addition: '1' to push back and '2' to insert by index:\n>> ";
+                if (!inputNumber(choice, true, true)) break;
+
+                // InputError
+                if (choice != 1 && choice != 2) {
+                    std::cout << "InputError: Unknown command '" << choice << "'\n";
+                    break;
+                }
+
+                // Get value
+                int value;
+                std::cout << "<< Enter the value:\n>> ";
+                if (!inputNumber(value, true, false)) break;
+
+                // Append or insert
+                if (choice == 1) {
+                    list.append(value);
+                } else if (choice == 2) {
+                    unsigned index;
+                    std::cout << "<< Enter the index:\n>> ";
+                    if (!inputNumber(index, true, true)) break;
+                    list.insert(index, value);
+                }
+
+                std::cout << "Updated list: " << list << std::endl;
+
+                break;
+            }
+
+            // Delete existing node
+            case '5': {
+                unsigned index;
+                std::cout << "<< Enter index of existing node:\n>> ";
+                if (!inputNumber(index, true, true)) break;
+
+                list.remove(index);
+
+                std::cout << "Updated list: " << list << std::endl;
+
+                break;
+            }
+
+            // Swap two elements
+            case '6': {
+                unsigned index1, index2;
+                std::cout << "Enter two indexes, separated by space:\n>> ";
+                if (!inputNumber(index1, true, true)) break;
+                if (!inputNumber(index2, true, true)) break;
+
+                list.swap(index1, index2);
+
+                std::cout << "Updated list: " << list << std::endl;
 
                 break;
             }
@@ -106,6 +198,11 @@ void TApplication::help() {
     std::cout << "h: Help (this menu)\n";
     std::cout << std::setw(32) << std::setfill('-') << '\n';
     std::cout << "1: Create the list\n";
+    std::cout << "2: Print the list\n";
+    std::cout << "3: Find element\n";
+    std::cout << "4: Add new node\n";
+    std::cout << "5: Delete existing node\n";
+    std::cout << "6: Swap two elements\n";
     std::cout << std::setw(32) << std::setfill('-') << '\n';
     std::cout << "0: Exit\n";
     std::cout << std::setw(32) << std::setfill('-') << '\n';

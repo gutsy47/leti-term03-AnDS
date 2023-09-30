@@ -25,9 +25,14 @@ public:
 
     // Methods
     void clear();
+    struct Node * get(unsigned);
+    int find(int);
     void append(int);
+    void insert(unsigned, int);
+    void remove(unsigned);
+    void swap(unsigned, unsigned);
+    [[nodiscard]] unsigned getSize() const;
     [[nodiscard]] bool isEmpty() const;
-
 private:
     struct Node *_head = nullptr;
     struct Node *_tail = nullptr;

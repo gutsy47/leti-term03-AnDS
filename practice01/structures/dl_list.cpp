@@ -129,6 +129,87 @@ void List::append(int value) {
 }
 
 
+/// Get node by it's index
+struct Node * List::get(unsigned index) {
+    if (isEmpty()) {
+        std::cout << "IndexError: The list is empty\n";
+        return nullptr;
+    }
+
+    // Traverse to the index or throw an error
+    struct Node *node = _head;
+    for (unsigned i = 0; i < index; ++i) {
+        if (!node->next) {
+            std::cout << "IndexError: Index out of range\n";
+            return nullptr;
+        }
+        node = node->next;
+    }
+
+    return node;
+}
+
+
+/// Return index if element found else -1
+int List::find(int value) {
+    if (isEmpty()) return -1;
+
+    // Traverse while not found
+    struct Node *node = _head;
+    for (int i = 0; i < _size; ++i) {
+        if (node->value == value) return i;
+        if (!node->next) return -1;
+        node = node->next;
+    }
+}
+
+
+/// Add element to the specified position
+void List::insert(unsigned index, int value) {
+    struct Node * found = get(index);
+
+    // IndexError
+    if (!found) return;
+
+    // Insert
+    auto *newNode = new struct Node;
+    newNode->value = value;
+    newNode->prev = found->prev;
+    newNode->next = found;
+    if (newNode->prev) newNode->prev->next = newNode;
+    if (newNode->next) newNode->next->prev = newNode;
+    if (index == 0) _head = newNode;
+}
+
+
+/// Remove element by it's index
+void List::remove(unsigned index) {
+    if (isEmpty()) return;
+
+    // Find
+    struct Node *found = get(index);
+    if (!found) return;
+
+    // Delete
+    found->prev ? found->prev->next = found->next : _head = found->next; // Update prev node or update the head if null
+    found->next ? found->next->prev = found->prev : nullptr;             // Update next node or list deleted if null
+    delete found;
+    _size--;
+}
+
+
+/// Swap two nodes by their indexes
+void List::swap(unsigned ind1, unsigned ind2) {
+
+}
+
+
+/// Return size of the list
+unsigned List::getSize() const {
+    return _size;
+}
+
+
 /// Return false if list is empty else true
 bool List::isEmpty() const {
     return _size == 0;

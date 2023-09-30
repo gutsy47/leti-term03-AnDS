@@ -26,10 +26,11 @@ public:
     // Operators
     List& operator= (const List&);
     friend std::ostream& operator<< (std::ostream&, const List&);
+    struct Node * operator[] (int);
 
     // Methods
     void clear();
-    struct Node * get(unsigned);
+    struct Node * get(int);
     int find(int);
     void append(int);
     void insert(unsigned, int);

@@ -97,6 +97,12 @@ std::ostream& operator<< (std::ostream& os, const List& list) {
 }
 
 
+/// Get node by it's index via [] operator
+struct Node * List::operator[](int index) {
+    return get(index);
+}
+
+
 /// Clear the list. Set head & tail to nullptr
 void List::clear() {
     while (_head) {
@@ -130,10 +136,15 @@ void List::append(int value) {
 
 
 /// Get node by it's index
-struct Node * List::get(unsigned index) {
+struct Node * List::get(int index) {
     if (isEmpty()) {
         std::cout << "IndexError: The list is empty\n";
         return nullptr;
+    } else if (abs(index) > getSize()) {
+        std::cout << "IndexError: Index out of range\n";
+        return nullptr;
+    } else if (index < 0) {
+        index = int(getSize()) + index;
     }
 
     // Traverse to the index or throw an error

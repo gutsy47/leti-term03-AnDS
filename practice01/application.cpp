@@ -114,11 +114,11 @@ int TApplication::executeList() {
 
                 // Search
                 if (choice == 1) {
-                    unsigned index;
+                    int index;
                     std::cout << "<< Enter the index:\n>> ";
-                    if (!inputNumber(index, true, true)) break;
+                    if (!inputNumber(index, true, false)) break;
 
-                    struct Node *element = list.get(index);
+                    struct Node *element = list[index];
                     if (element) std::cout << "Element " << element->value << " found\n";
                     else std::cout << "Element not found\n";
                 } else if (choice == 2) {

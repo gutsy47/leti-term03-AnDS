@@ -225,8 +225,105 @@ int TApplication::executeDArr() {
 
         // Execute
         switch (userChoice) {
-            // Do smh
+            // Create array
             case '1': {
+                // Get values;
+                int size;
+                std::cout << "<< Enter the size of the array:\n>> ";
+                if (!inputNumber(size, true, true)) break;
+                int values[size];
+                std::cout << "<< Enter " << size << " elements separated by space:\n>> ";
+                for (auto &el : values)
+                    if (!inputNumber(el)) break;
+
+                // Reassign the array
+                arr = DArray(size, values);
+                std::cout << "Created array: " << arr << std::endl;
+
+                break;
+            }
+
+            // Print array
+            case '2': {
+                std::cout << arr << "(size = " << arr.getSize() << ", capacity = " << arr.getCapacity() << ")\n";
+                break;
+            }
+
+            // Find element
+            case '3': {
+                // Get choice
+                int choice;
+                std::cout << "<< Choose the way of search: '1' to search by index and '2' to search by value:\n>> ";
+                if (!inputNumber(choice, true, true)) break;
+
+                // Search
+                if (choice == 1) {
+                    int index;
+                    std::cout << "<< Enter the index:\n>> ";
+                    if (!inputNumber(index, true, true)) break;
+
+                    int *value = arr[index];
+                    if (value) std::cout << "Element " << *value << " found\n";
+                    else std::cout << "Element not found\n";
+                } else if (choice == 2) {
+                    int value;
+                    std::cout << "Enter the value:\n>> ";
+                    if (!inputNumber(value, true, true)) break;
+
+                    int index = arr.find(value);
+                    if (index != -1) std::cout << "Element found. Index: " << index << std::endl;
+                    else std::cout << "Element not found\n";
+                } else {
+                    std::cout << "InputError: Unknown command '" << choice << "'\n";
+                }
+
+                break;
+            }
+
+            // Add new element
+            case '4': {
+                // Get user choice
+                int choice;
+                std::cout << "<< Choose the way of addition: '1' to push back and '2' to insert by index:\n>> ";
+                if (!inputNumber(choice, true, true)) break;
+
+                // InputError
+                if (choice != 1 && choice != 2) {
+                    std::cout << "InputError: Unknown command '" << choice << "'\n";
+                    break;
+                }
+
+                // Get value
+                int value;
+                std::cout << "<< Enter the value:\n>> ";
+                if (!inputNumber(value, true, false)) break;
+
+                // Append or insert
+                if (choice == 1) {
+                    arr.append(value);
+                } else {
+                    unsigned index;
+                    std::cout << "<< Enter the index:\n>> ";
+                    if (!inputNumber(index, true, true)) break;
+                    arr.insert(index, value);
+                }
+
+                std::cout << "Updated array: " << arr << std::endl;
+
+                break;
+            }
+
+
+            // Delete element
+            case '5': {
+                unsigned index;
+                std::cout << "<< Enter index of existing element:\n>> ";
+                if (!inputNumber(index, true, true)) break;
+
+                arr.remove(index);
+
+                std::cout << "Updated array: " << arr << std::endl;
+
                 break;
             }
 
@@ -321,12 +418,11 @@ void TApplication::helpDArr() {
     std::cout << std::setw(32) << std::setfill('-') << '\n';
     std::cout << "h: Help (this menu)\n";
     std::cout << std::setw(32) << std::setfill('-') << '\n';
-    std::cout << "1: \n";
-    std::cout << "2: \n";
-    std::cout << "3: \n";
-    std::cout << "4: \n";
-    std::cout << "5: \n";
-    std::cout << "6: \n";
+    std::cout << "1: Create the dynamic array\n";
+    std::cout << "2: Print the dynamic array\n";
+    std::cout << "3: Find element\n";
+    std::cout << "4: Add new element\n";
+    std::cout << "5: Delete existing element\n";
     std::cout << std::setw(32) << std::setfill('-') << '\n';
     std::cout << "0: Exit\n";
     std::cout << std::setw(32) << std::setfill('-') << '\n';

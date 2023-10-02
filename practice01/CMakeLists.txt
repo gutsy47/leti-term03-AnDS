@@ -13,4 +13,5 @@ add_executable(
         structures/dynamic_array.cpp
         structures/stack.h
         structures/stack.cpp
+        rpn.h
 )

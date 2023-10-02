@@ -8,6 +8,7 @@ private:
     static int executeList();  // Execute the list thread
     static int executeDArr();  // Execute the dynamic array thread
     static int executeStack(); // Execute the stack thread
+    static int executeRPN();   // Execute the polish notation thread
 
     static void helpList();    // Print the available list commands
     static void helpDArr();    // Print the available dynamic array commands

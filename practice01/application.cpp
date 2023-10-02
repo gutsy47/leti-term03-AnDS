@@ -3,6 +3,8 @@
 #include "structures/dl_list.h"
 #include "structures/dynamic_array.h"
 #include "structures/stack.h"
+#include "rpn.h"
+#include <vector>
 
 #include <iostream>
 #include <iomanip>
@@ -37,10 +39,11 @@ int TApplication::execute() {
 
     char userChoice;
     while (true) {
-        std::cout << "Choose the structure:\n";
+        std::cout << "Choose the thread:\n";
         std::cout << "1. Doubly-linked list\n";
         std::cout << "2. Dynamic array\n";
         std::cout << "3. Stack\n";
+        std::cout << "4. Reverse Polish Notation\n";
 
         // Get command from the keyboard
         if (!menu(userChoice)) continue; // Error occurred
@@ -58,6 +61,9 @@ int TApplication::execute() {
         else if (userChoice == '3') {
             std::cout << "Stack thread executed. Enter 'h' to get list of commands\n";
             executeStack();
+        } else if (userChoice == '4') {
+            std::cout << "Polish Notation thread executed.\n";
+            executeRPN();
         } else {
             std::cout << "RuntimeError. Unknown command\n";
         }
@@ -392,6 +398,44 @@ int TApplication::executeStack() {
 
     return 0;
 }
+
+
+/// Execute the polish notation thread
+int TApplication::executeRPN() {
+    bool isDebugMode = true;
+    while (true) {
+        try {
+            // Get expression or command
+            std::cout << "<< Enter an expression ['0' - exit, 'd' - toggle debug mode]\n>> ";
+            std::string expr;
+            std::getline(std::cin, expr);
+
+            // Exit or toggle debug
+            if (expr == "0")
+                break;
+            if (expr == "d") {
+                isDebugMode = !isDebugMode;
+                std::cout << "Debug mode switched to " << isDebugMode << '\n';
+                continue;
+            }
+
+            // Get RPN and evaluate
+            std::vector<std::string> rpn = toRPN(expr, isDebugMode);
+            double rpnAnswer = evaluate(rpn, isDebugMode);
+
+            // Output
+            std::cout << std::setw(64) << std::setfill('-') << ' ' << std::setfill(' ');
+            std::cout << "\n Input: " << expr << "\n   RPN: ";
+            for (auto &token : rpn) std::cout << token << ' ';
+            std::cout << "\nAnswer: " << rpnAnswer << std::endl;
+        }
+        catch (std::invalid_argument& e) { std::cerr << "Invalid argument. " << e.what() << std::endl; }
+        catch (std::runtime_error& e) { std::cerr << "Runtime error. " << e.what() << std::endl; }
+    }
+
+    return 0;
+}
+
 
 /// Print available List commands
 void TApplication::helpList() {

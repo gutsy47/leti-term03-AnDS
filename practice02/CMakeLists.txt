@@ -7,4 +7,6 @@ add_executable(
         practice02 main.cpp
         application.cpp
         application.h
+        ../practice01/structures/dl_list.h
+        ../practice01/structures/dl_list.cpp
 )

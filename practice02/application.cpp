@@ -1,4 +1,5 @@
 #include "application.h"
+#include "../practice01/structures/dl_list.h"
 
 #include <iostream>
 #include <iomanip>
@@ -26,28 +27,77 @@ bool inputNumber(NumType &variable, bool isSpaceSep = false, bool isUnsigned = f
 /// Execute the main thread
 int TApplication::execute() {
     char userChoice;
+
+    // Get values
+    List list;
+    int size;
+    std::cout << "<< Enter the size of the list:\n>> ";
+    if (!inputNumber(size, true, true)) return -1;
+    int values[size];
+    std::cout << "<< Enter " << size << " elements separated by space:\n>> ";
+    for (auto &el: values)
+        if (!inputNumber(el)) break;
+
+    // Create the list
+    list = List(size, values);
+    std::cout << "Created list: " << list << std::endl;
+
+
     while (true) {
         // Get command from the keyboard
         if (!menu(userChoice)) continue; // Error occurred
-        if (userChoice == '0') break;
+        if (userChoice == '0') break;    // Exit command
 
         // Execute
         switch (userChoice) {
-            // Command 1
+            // QuickSort
             case '1': {
-                std::cout << "Command 1\n";
+                std::cout << "QuickSort\n";
                 break;
             }
 
-            // Command 2
+            // TimSort
             case '2': {
-                std::cout << "Command 2\n";
+                std::cout << "TImSort\n";
                 break;
             }
 
-            // Command 3
-            case '3': {
-                std::cout << "Command 3\n";
+            // Insert
+            case 'i': {
+                // Get user choice
+                int choice;
+                std::cout << "<< Choose the way of addition: '1' to push back and '2' to insert by index:\n>> ";
+                if (!inputNumber(choice, true, true)) break;
+
+                // InputError
+                if (choice != 1 && choice != 2) {
+                    std::cout << "InputError: Unknown command '" << choice << "'\n";
+                    break;
+                }
+
+                // Get value
+                int value;
+                std::cout << "<< Enter the value:\n>> ";
+                if (!inputNumber(value, true, false)) break;
+
+                // Append or insert
+                if (choice == 1) {
+                    list.append(value);
+                } else if (choice == 2) {
+                    unsigned index;
+                    std::cout << "<< Enter the index:\n>> ";
+                    if (!inputNumber(index, true, true)) break;
+                    list.insert(index, value);
+                }
+
+                std::cout << "Updated list: " << list << std::endl;
+
+                break;
+            }
+
+            // Print list
+            case 'p': {
+                std::cout << list << "(size = " << list.getSize() << ")\n";
                 break;
             }
 
@@ -73,9 +123,10 @@ void TApplication::help() {
     std::cout << std::setw(32) << std::setfill('-') << '\n';
     std::cout << "h: Help (this menu)\n";
     std::cout << std::setw(32) << std::setfill('-') << '\n';
-    std::cout << "1: Command 1\n";
-    std::cout << "2: Command 2\n";
-    std::cout << "3: Command 3\n";
+    std::cout << "1: Sort list via QuickSort\n";
+    std::cout << "2: Sort list via TimSort\n";
+    std::cout << "i: Insert element\n";
+    std::cout << "p: Print list\n";
     std::cout << std::setw(32) << std::setfill('-') << '\n';
     std::cout << "0: Exit\n";
     std::cout << std::setw(32) << std::setfill('-') << '\n';

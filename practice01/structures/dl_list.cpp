@@ -177,7 +177,7 @@ int List::find(int value) {
 
 /// Add element to the specified position
 void List::insert(unsigned index, int value) {
-    struct Node * found = get(index);
+    struct Node * found = get(int(index));
 
     // IndexError
     if (!found) return;
@@ -198,7 +198,7 @@ void List::remove(unsigned index) {
     if (isEmpty()) return;
 
     // Find
-    struct Node *found = get(index);
+    struct Node *found = get(int(index));
     if (!found) return;
 
     // Delete
@@ -218,12 +218,13 @@ void List::swap(unsigned i1, unsigned i2) {
     if (i1 > i2) std::swap(i1, i2);
 
     // Get nodes. If not found -> return
-    struct Node *node1 = get(i1);
-    struct Node *node2 = get(i2);
+    struct Node *node1 = get(int(i1));
+    struct Node *node2 = get(int(i2));
     if (!node1 || !node2) return;
 
-    // If node1 is the head one, update the head to node2
+    // Head and tail cases
     if (node1 == _head) _head = node2;
+    if (node2 == _head) _tail = node1;
 
     // Update 'next' elements and update the 'prev' pointers of the 'next' nodes if exist
     struct Node *temp = node1->next;

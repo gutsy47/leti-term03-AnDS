@@ -1,5 +1,5 @@
 #include "application.h"
-#include "../practice01/structures/dl_list.h"
+#include "sorts.h"
 
 #include <iostream>
 #include <iomanip>
@@ -52,13 +52,17 @@ int TApplication::execute() {
         switch (userChoice) {
             // QuickSort
             case '1': {
-                std::cout << "QuickSort\n";
+                std::cout << "Sorting via quickSort..\n";
+                quickSort(list);
+                std::cout << "Sorted list: " << list << '\n';
                 break;
             }
 
             // TimSort
             case '2': {
-                std::cout << "TImSort\n";
+                std::cout << "Sorting via timSort\n";
+                timSort(list);
+                std::cout << "Sorted list: " << list << '\n';
                 break;
             }
 

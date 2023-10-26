@@ -1,5 +1,6 @@
 #include "application.h"
-#include "sorts.h"
+#include "quicksort.h"
+#include "timsort.h"
 
 #include <iostream>
 #include <iomanip>

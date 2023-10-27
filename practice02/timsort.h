@@ -9,6 +9,7 @@ private:
     static void insertionSort(List&);
     static int getMinRun(int);
     static Stack getRuns(List&);
+    static int binarySearch(List&, int);
     static List merge(List&, List&);
 
     friend void timSort(List &list);
@@ -65,7 +66,29 @@ Stack TimSortUtils::getRuns(List &list) {
 }
 
 
+int TimSortUtils::binarySearch(List& list, int key) {
+    int left = 0;
+    int right = (int) list.getSize() - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        struct Node *midNode = list[mid];
+        if (midNode->value == key) return mid;
+        else if (midNode->value < key) left = mid + 1;
+        else right = mid - 1;
+    }
+
+    return list[right]->value == key ? right : -1;
+}
+
+
 List TimSortUtils::merge(List &a, List &b) {
+    // Galloping magic number. 7 elems in a row is lower than the b[i] -> do "galloping"
+    const unsigned short N = 7;
+    unsigned short consecutive = 0;
+    bool isFromA = true;
+
     // The insert operation is times longer than the append operation,
     // so it was decided to spend additional memory to speed up the merge. It also improves code readability
     List result;
@@ -73,12 +96,44 @@ List TimSortUtils::merge(List &a, List &b) {
     struct Node *bNode = b[0];
 
     while (aNode && bNode) {
-        if (aNode->value <= bNode->value) {
-            result.append(aNode->value);
-            aNode = aNode->next;
+        // Galloping. Find b[i] in a via binarySearch
+        if (consecutive == N) {
+            consecutive = 0;
+            if (isFromA) {
+                int insertWhile = binarySearch(a, bNode->value);
+                if (insertWhile < 0) continue;
+
+                for (; aNode && aNode->value <= a[insertWhile]->value; aNode = aNode->next)
+                    result.append(aNode->value);
+                result.append(bNode->value);
+                bNode = bNode->next;
+            } else {
+                int insertWhile = binarySearch(b, aNode->value);
+                if (insertWhile < 0) continue;
+
+                for (; bNode && bNode->value <= b[insertWhile]->value; bNode = bNode->next)
+                    result.append(bNode->value);
+                result.append(aNode->value);
+                aNode = aNode->next;
+            }
         } else {
-            result.append(bNode->value);
-            bNode = bNode->next;
+            if (aNode->value <= bNode->value) {
+                if (isFromA) consecutive++;
+                else {
+                    consecutive = 1;
+                    isFromA = true;
+                }
+                result.append(aNode->value);
+                aNode = aNode->next;
+            } else {
+                if (!isFromA) consecutive++;
+                else {
+                    consecutive = 1;
+                    isFromA = false;
+                }
+                result.append(bNode->value);
+                bNode = bNode->next;
+            }
         }
     }
 
@@ -92,6 +147,8 @@ List TimSortUtils::merge(List &a, List &b) {
 
 /// Sort list via tim sort
 void timSort(List &list) {
+    if (list.getSize() <= 1) return; // Nothing to do
+
     Stack runs = TimSortUtils::getRuns(list);
 
     List x = runs.pop();

@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <chrono>
 
 /**
  * Reads the number input via cin
@@ -25,18 +26,35 @@ bool inputNumber(NumType &variable, bool isSpaceSep = false, bool isUnsigned = f
 }
 
 
+/// Gets the start time_point and prints the duration_cast(now-start) in scientific format
+void printTimeDurationCast(auto start, bool isEndOfLine = true) {
+    auto end = std::chrono::steady_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+    std::cout << std::scientific << std::setprecision(1);
+    std::cout << elapsed.count() / 1e9 << " s";
+    if (isEndOfLine) std::cout << std::endl;
+    std::cout << std::defaultfloat;
+}
+
+
+bool isSorted(List &list) {
+    for (struct Node *curr = list[0]; curr; curr = curr->next)
+        if (curr->next && curr->value > curr->next->value) return false;
+    return true;
+}
+
+
 /// Execute the main thread
 int TApplication::execute() {
     char userChoice;
 
     // Get values
-    List list;
     int size;
     std::cout << "<< Enter the size of the list:\n>> ";
     if (!inputNumber(size, true, true)) return -1;
     int values[size];
     std::cout << "<< Enter 0 to fill with random numbers or";
-    std::cout << "enter " << size << " elements separated by space:\n>> ";
+    std::cout << " enter " << size << " elements separated by space:\n>> ";
     bool isRandFill = false;
     for (int i = 0; i < size; ++i) {
         if (!inputNumber(values[i])) break;
@@ -45,11 +63,12 @@ int TApplication::execute() {
             break;
         }
     }
-    if (isRandFill) for (auto &el : values) el = 1 + std::rand() % 100;
+    if (isRandFill) for (auto &el : values) el = 1 + std::rand() % 1000;
 
     // Create the list
-    list = List(size, values);
-    std::cout << "Created list: " << list << std::endl;
+    List unsortedList(size, values);
+    List list(size, values);
+    std::cout << "List created.\n";
 
 
     while (true) {
@@ -62,16 +81,22 @@ int TApplication::execute() {
             // QuickSort
             case '1': {
                 std::cout << "Sorting via quickSort..\n";
+                auto start = std::chrono::steady_clock::now();
                 quickSort(list);
-                std::cout << "Sorted list: " << list << '\n';
+                std::cout << "Sorted. Elapsed time: ";
+                printTimeDurationCast(start, false);
+                std::cout << "; isSorted - " << isSorted(list) << std::endl;
                 break;
             }
 
             // TimSort
             case '2': {
-                std::cout << "Sorting via timSort\n";
+                std::cout << "Sorting via timSort..\n";
+                auto start = std::chrono::steady_clock::now();
                 timSort(list);
-                std::cout << "Sorted list: " << list << '\n';
+                std::cout << "Sorted. Elapsed time: ";
+                printTimeDurationCast(start, false);
+                std::cout << "; isSorted - " << isSorted(list) << std::endl;
                 break;
             }
 
@@ -114,6 +139,13 @@ int TApplication::execute() {
                 break;
             }
 
+            // Reset list to the unsorted state
+            case 'r': {
+                list = unsortedList;
+                std::cout << "List updated.\n";
+                break;
+            }
+
             // Help menu
             case 'h': {
                 help();
@@ -140,6 +172,7 @@ void TApplication::help() {
     std::cout << "2: Sort list via TimSort\n";
     std::cout << "i: Insert element\n";
     std::cout << "p: Print list\n";
+    std::cout << "r: Reset to the unsorted\n";
     std::cout << std::setw(32) << std::setfill('-') << '\n';
     std::cout << "0: Exit\n";
     std::cout << std::setw(32) << std::setfill('-') << '\n';

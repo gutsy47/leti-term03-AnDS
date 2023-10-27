@@ -28,6 +28,8 @@ public:
     List& operator= (const List&);
     friend std::ostream& operator<< (std::ostream&, const List&);
     struct Node * operator[] (int);
+    bool operator> (const List&) const;
+    bool operator< (const List&) const;
 
     // Methods
     void clear();

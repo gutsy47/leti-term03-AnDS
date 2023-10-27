@@ -118,6 +118,18 @@ struct Node * List::operator[](int index) {
 }
 
 
+/// Is greater than rhs. Compared value is size
+bool List::operator> (const List &list) const {
+    return _size > list.getSize();
+}
+
+
+/// Is less than rhs. Compared value is size
+bool List::operator< (const List &list) const {
+    return _size < list.getSize();
+}
+
+
 /// Clear the list. Set head & tail to nullptr
 void List::clear() {
     while (_head) {

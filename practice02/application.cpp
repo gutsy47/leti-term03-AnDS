@@ -35,9 +35,17 @@ int TApplication::execute() {
     std::cout << "<< Enter the size of the list:\n>> ";
     if (!inputNumber(size, true, true)) return -1;
     int values[size];
-    std::cout << "<< Enter " << size << " elements separated by space:\n>> ";
-    for (auto &el: values)
-        if (!inputNumber(el)) break;
+    std::cout << "<< Enter 0 to fill with random numbers or";
+    std::cout << "enter " << size << " elements separated by space:\n>> ";
+    bool isRandFill = false;
+    for (int i = 0; i < size; ++i) {
+        if (!inputNumber(values[i])) break;
+        if (i == 0 && values[i] == 0) {
+            isRandFill = true;
+            break;
+        }
+    }
+    if (isRandFill) for (auto &el : values) el = 1 + std::rand() % 100;
 
     // Create the list
     list = List(size, values);

@@ -9,4 +9,6 @@ add_executable(
         application.h
         ../practice01/structures/dl_list.h
         ../practice01/structures/dl_list.cpp
+        stack/stack.cpp
+        stack/stack.h
 )

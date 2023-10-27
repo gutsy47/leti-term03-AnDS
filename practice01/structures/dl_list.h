@@ -21,6 +21,7 @@ public:
     List();
     explicit List(unsigned size, int value = 0);
     explicit List(unsigned, const int*);
+    List(const List&);
     ~List();
 
     // Operators
@@ -30,6 +31,7 @@ public:
 
     // Methods
     void clear();
+    void reverse();
     struct Node * get(int);
     int find(int);
     void append(int);

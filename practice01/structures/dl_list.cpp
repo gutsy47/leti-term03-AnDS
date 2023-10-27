@@ -63,11 +63,26 @@ List::List(unsigned size, const int *values) {
 }
 
 
+/**
+ * Deep copy constructor
+ * @param[in] other - list from which the copy is taken
+ */
+List::List(const List& other) {
+    _head = nullptr;
+    _tail = nullptr;
+    _size = 0;
+
+    struct Node *current = other._head;
+    while (current) {
+        append(current->value);
+        current = current->next;
+    }
+}
+
+
 /// Free the memory allocated for a DLL
 List::~List() {
     clear();
-    delete _head;
-    delete _tail;
 }
 
 
@@ -115,6 +130,27 @@ void List::clear() {
     _size = 0;
 }
 
+
+/// Reverse the list
+void List::reverse() {
+    // Accessing an element is a difficult operation for lists,
+    // so swap pointers not the values themselves
+    Node *current = _head;
+    Node *prev = nullptr;
+    Node *next;
+
+    // Swap pointers
+    while (current) {
+        next = current->next;
+        current->next = prev;
+        current->prev = next;
+        prev = current;
+        current = next;
+    }
+
+    // And update head and tail
+    std::swap(_head, _tail);
+}
 
 /// Add element to the end of the list
 void List::append(int value) {
@@ -223,8 +259,14 @@ void List::swap(unsigned i1, unsigned i2) {
     if (!node1 || !node2) return;
 
     // Head and tail cases
-    if (node1 == _head) _head = node2;
-    if (node2 == _head) _tail = node1;
+    if (node1 == _head && node2 == _tail) {
+        _head = node2;
+        _tail = node1;
+    } else if (node1 == _head) {
+        _head = node2;
+    } else if (node2 == _tail) {
+        _tail = node1;
+    }
 
     // Update 'next' elements and update the 'prev' pointers of the 'next' nodes if exist
     struct Node *temp = node1->next;

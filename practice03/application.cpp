@@ -1,7 +1,9 @@
 #include "application.h"
+#include "trees/avl-tree.h"
 
 #include <iostream>
 #include <iomanip>
+
 
 /**
  * Reads the number input via cin
@@ -23,9 +25,18 @@ bool inputNumber(NumType &variable, bool isSpaceSep = false, bool isUnsigned = f
 }
 
 
+void fillTreeRandom(AVLTree &tree) {
+    std::cout << "<< Enter size of the tree:\n>> ";
+    int size;
+    while (!inputNumber(size, true, true) || size == 0) std::cout << ">> ";
+    for (int i = 0; i < size; ++i) tree.insert(-99 + std::rand() % 198);
+}
+
+
 /// Execute the main thread
 int TApplication::execute() {
     char userChoice;
+    AVLTree tree;
     while (true) {
         // Get command from the keyboard
         if (!menu(userChoice)) continue; // Error occurred
@@ -35,7 +46,11 @@ int TApplication::execute() {
         switch (userChoice) {
             // Command 1
             case '1': {
-                std::cout << "Command 1\n";
+                fillTreeRandom(tree);
+                std::cout << "Print horizontal tree\n";
+                tree.print();
+                std::cout << "Print vertical tree\n";
+                tree.print(true);
                 break;
             }
 

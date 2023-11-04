@@ -7,4 +7,6 @@ add_executable(
         practice03 main.cpp
         application.cpp
         application.h
+        trees/avl-tree.cpp
+        trees/avl-tree.h
 )

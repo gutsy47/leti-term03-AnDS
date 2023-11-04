@@ -47,10 +47,7 @@ int TApplication::execute() {
             // Command 1
             case '1': {
                 fillTreeRandom(tree);
-                std::cout << "Print horizontal tree\n";
-                tree.print();
-                std::cout << "Print vertical tree\n";
-                tree.print(true);
+                std::cout << "Print tree\n" << tree;
                 break;
             }
 

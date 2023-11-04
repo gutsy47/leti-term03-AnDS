@@ -15,37 +15,53 @@
  */
 class AVLTree {
 private:
-    struct Node {
+    class Node {
+    public:
+        explicit Node(int);
+
         int key;
         Node* left;
         Node* right;
         unsigned char height;
 
-        explicit Node(int);
+        void fixHeight();
     };
     Node *root;
 
 public:
+    // Constructors and destructors
+    AVLTree();    // Constructor
+    ~AVLTree();   // Destructor
+    void clear(); // Delete the nodes but not the tree
+
+    // Accessors
+    [[nodiscard]] unsigned char height() const;
+
+    // Friends
+    friend std::ostream& operator<< (std::ostream&, const AVLTree&);
+
+    // Methods
     void insert(int);
-    Node* search(int);
-    void deleteNode(int);
-    void print(bool isPrintVertical = false, std::ostream &outStream = std::cout) const;
-    void clear();
-    AVLTree() : root(nullptr) {}
+    bool find(int);
+    void remove(int);
 
 private:
-    void getVerticalOrder(const Node*, std::vector<std::vector<int>>&, int) const;
-    void printHorizontal(const Node*) const;
-    void printVertical(Node*, int, std::ostream &outStream = std::cout, std::string prefix = "", bool isLeft = false) const;
-    static unsigned char height(Node*);
-    static void fixHeight(Node*);
-    static Node* rotateRight(Node*);
-    static Node* rotateLeft(Node*);
-    static int getBalanceFactor(Node*);
-    Node* _insert(Node*, int);
-    Node* _search(Node*, int);
-    Node* _deleteNode(Node*, int);
+    // Balance utils
+    static unsigned char getHeight(Node*); // Return height if (node != nullptr) else zero
+    int getBalanceFactor(Node*);           // Return factor if (node != nullptr) else zero
+    Node* rotateRight(Node*);
+    Node* rotateLeft(Node*);
+
+    // Methods' utils
+    Node* insertUtil(Node*, int);
+    Node* searchUtil(Node*, int);
+    Node* removeUtil(Node*, int);
     void deleteTree(Node*);
+
+    // Output stream utils
+    void getVerticalOrder(const Node*, std::vector<std::vector<int>>&, int) const; // PrintHorizontal util
+    void osHor(std::ostream&) const; // Print from U to D
+    void osVert(std::ostream&, const Node*, std::string prefix = "", bool isLeft = false) const; // Print from L to R
 };
 
 #endif //INC_02_TREE_H

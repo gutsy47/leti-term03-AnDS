@@ -1,5 +1,6 @@
 #include "application.h"
 #include "trees/avl-tree.h"
+#include "trees/bin-tree.h"
 
 #include <iostream>
 #include <iomanip>

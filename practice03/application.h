@@ -1,5 +1,5 @@
-#ifndef OOP_APPLICATION_H
-#define OOP_APPLICATION_H
+#ifndef ADS_APPLICATION_H
+#define ADS_APPLICATION_H
 
 class TApplication {
 public:
@@ -9,4 +9,4 @@ private:
     static bool menu(char&); // Get user's choice
 };
 
-#endif //OOP_APPLICATION_H
+#endif //ADS_APPLICATION_H

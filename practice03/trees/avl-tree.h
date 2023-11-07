@@ -1,5 +1,5 @@
-#ifndef INC_02_TREE_H
-#define INC_02_TREE_H
+#ifndef ADS_AVL_TREE_H
+#define ADS_AVL_TREE_H
 
 #include <iostream>
 #include <fstream>
@@ -64,4 +64,4 @@ private:
     void osVert(std::ostream&, const Node*, std::string prefix = "", bool isLeft = false) const; // Print from L to R
 };
 
-#endif //INC_02_TREE_H
+#endif //ADS_AVL_TREE_H

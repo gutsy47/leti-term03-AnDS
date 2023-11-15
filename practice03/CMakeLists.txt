@@ -11,4 +11,7 @@ add_executable(
         trees/bin-tree.h
         trees/avl-tree.cpp
         trees/avl-tree.h
+
+        ../practice01/structures/stack.cpp
+        ../practice01/structures/stack.h
 )

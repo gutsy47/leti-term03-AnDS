@@ -52,15 +52,11 @@ int TApplication::execute() {
                 break;
             }
 
-            // Command 2
-            case '2': {
-                std::cout << "Command 2\n";
-                break;
-            }
-
             // Command 3
             case '3': {
-                std::cout << "Command 3\n";
+                std::cout << "Parsed:\n";
+                BinTree binTree("(1 (2 (3 (4)(5)) (6 (7)(8))) (9 (N)(11)))");
+                std::cout << binTree;
                 break;
             }
 

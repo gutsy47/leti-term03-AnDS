@@ -4,6 +4,11 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
+#include <stdexcept>
+#include <cmath>
+#include <algorithm>
+#include <stack>
 
 
 /**
@@ -17,21 +22,24 @@ class BinTree {
 private:
     class Node {
     public:
+        Node();
         explicit Node(int);
 
         int key;
         Node* left;
         Node* right;
     };
-    Node *root;
+    Node *root{};
 
 public:
     BinTree();
+    explicit BinTree(std::string);
     ~BinTree();
     friend std::ostream& operator<< (std::ostream&, const BinTree&);
     void depthFirstSearch();
 
 private:
+    Node* parse(std::vector<std::string>&);
     void depthFirstSearchUtil(Node*);
     void deleteTree(Node*);
     void osVert(std::ostream&, const Node*, std::string prefix = "", bool isLeft = false) const; // Print from L to R

@@ -133,6 +133,26 @@ BinTree::~BinTree() {
     deleteTree(root);
 }
 
+/// Deep copy util for = operator
+BinTree::Node* BinTree::copyTree(const Node* node) {
+    if (!node) return nullptr;
+
+    Node* newNode = new Node(node->key);
+    newNode->left = copyTree(node->left);
+    newNode->right = copyTree(node->right);
+
+    return newNode;
+}
+
+
+/// Assignment operator
+BinTree& BinTree::operator=(const BinTree& rhs) {
+    if (this != &rhs) {
+        deleteTree(root);
+        root = copyTree(rhs.root);
+    }
+    return *this;
+}
 
 /// Delete the tree recursively
 void BinTree::deleteTree(Node *head) {

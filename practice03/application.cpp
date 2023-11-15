@@ -1,118 +1,38 @@
 #include "application.h"
-#include "trees/avl-tree.h"
 #include "trees/bin-tree.h"
+#include "trees/avl-tree.h"
 
 #include <iostream>
-#include <iomanip>
-
-
-/**
- * Reads the number input via cin
- * @param[out] variable Reference to a declared variable
- * @param[in] isSpaceSep If true, it does not check the last character of the input for newline
- * @param[in] isUnsigned If true, then negative numbers will lead to an error
- * @return True if input was correct, else false
- */
-template <typename NumType>
-bool inputNumber(NumType &variable, bool isSpaceSep = false, bool isUnsigned = false) {
-    std::cin >> variable;
-    if (std::cin.fail() || (isUnsigned && variable < 0) || (isSpaceSep && std::cin.peek() != '\n')) {
-        std::cout << "Invalid input\n";
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        return false;
-    }
-    return true;
-}
-
-
-void fillTreeRandom(AVLTree &tree) {
-    std::cout << "<< Enter size of the tree:\n>> ";
-    int size;
-    while (!inputNumber(size, true, true) || size == 0) std::cout << ">> ";
-    for (int i = 0; i < size; ++i) tree.insert(-99 + std::rand() % 198);
-}
+#include <fstream>
 
 
 /// Execute the main thread
 int TApplication::execute() {
-    char userChoice;
-    AVLTree tree;
-    while (true) {
-        // Get command from the keyboard
-        if (!menu(userChoice)) continue; // Error occurred
-        if (userChoice == '0') break;
-
-        // Execute
-        switch (userChoice) {
-            // Command 1
-            case '1': {
-                fillTreeRandom(tree);
-                std::cout << "Print tree\n" << tree;
-                break;
-            }
-
-            // Command 3
-            case '3': {
-                try {
-                    std::cout << "<< Tokens:\n>> ";
-                    std::string input;
-                    std::getline(std::cin, input);
-                    BinTree binTree(input);
-                    std::cout << "Parsed:\n";
-                    std::cout << binTree;
-                }
-                catch (std::runtime_error& e) { std::cerr << "Runtime error. " << e.what() << std::endl; }
-                break;
-            }
-
-            // Help menu
-            case 'h': {
-                help();
-                break;
-            }
-
-            // Runtime error. Unknown command
-            default: std::cout << "Runtime error. Unknown command\n";
-        }
-        system("pause");
+    // Get input from the first line of the INPUT_FILE_PATH file
+    std::string path = std::getenv("INPUT_FILE_PATH");
+    std::ifstream iFile(path);
+    if (!iFile.is_open()) {
+        std::cerr << "FileNotFoundError. No such file: `" << path << "`\n";
+        return -1;
     }
+    std::string input;
+    std::getline(iFile, input);
+    iFile.close();
+    std::cout << "Input: " << input << std::endl;
+
+    // Parse the input into the binary tree
+    BinTree binTree;
+    try {
+        binTree = BinTree(input);
+        std::cout << "Parsed binary tree:\n";
+        std::cout << binTree;
+    }
+    catch (std::invalid_argument& e) { std::cerr << "Invalid argument. " << e.what() << std::endl; }
+    catch (std::runtime_error& e) { std::cerr << "Runtime error. " << e.what() << std::endl; }
+
+    // Some code uses binTree
+
+    system("pause");
 
     return 0;
-}
-
-
-/// Print available Dynamic Array commands
-void TApplication::help() {
-    std::cout << "Available commands:\n";
-    std::cout << std::setw(32) << std::setfill('-') << '\n';
-    std::cout << "h: Help (this menu)\n";
-    std::cout << std::setw(32) << std::setfill('-') << '\n';
-    std::cout << "1: Command 1\n";
-    std::cout << "2: Command 2\n";
-    std::cout << "3: Command 3\n";
-    std::cout << std::setw(32) << std::setfill('-') << '\n';
-    std::cout << "0: Exit\n";
-    std::cout << std::setw(32) << std::setfill('-') << '\n';
-    std::cout << std::setfill(' ');
-}
-
-
-/**
- * Prints the menu of commands and reads the user action input via cin
- * @param[out] userChoice Reference to a declared user's choice variable
- * @return True if input was correct, else false (error)
- */
-bool TApplication::menu(char &userChoice) {
-    std::cout << "<< Action:\n>> ";
-    std::cin >> userChoice;
-
-    // Error handler (i.e. more than one symbol input)
-    if (std::cin.fail() || std::cin.get() != '\n') {
-        std::cout << "RuntimeError. Unknown command\n";
-        std::cin.clear();
-        std::cin.ignore(100000, '\n');
-        return false;
-    }
-    return true;
 }

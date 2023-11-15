@@ -35,14 +35,20 @@ public:
     BinTree();
     explicit BinTree(std::string);
     ~BinTree();
+
     friend std::ostream& operator<< (std::ostream&, const BinTree&);
+    BinTree& operator= (const BinTree&);
+
     void depthFirstSearch();
 
 private:
     Node* parse(std::vector<std::string>&);
-    void depthFirstSearchUtil(Node*);
+    Node* copyTree(const Node*);
+
     void deleteTree(Node*);
     void osVert(std::ostream&, const Node*, std::string prefix = "", bool isLeft = false) const; // Print from L to R
+
+    void depthFirstSearchUtil(Node*);
 };
 
 

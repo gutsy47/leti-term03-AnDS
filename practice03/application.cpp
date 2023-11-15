@@ -54,9 +54,15 @@ int TApplication::execute() {
 
             // Command 3
             case '3': {
-                std::cout << "Parsed:\n";
-                BinTree binTree("(1 (2 (3 (4)(5)) (6 (7)(8))) (9 (N)(11)))");
-                std::cout << binTree;
+                try {
+                    std::cout << "<< Tokens:\n>> ";
+                    std::string input;
+                    std::getline(std::cin, input);
+                    BinTree binTree(input);
+                    std::cout << "Parsed:\n";
+                    std::cout << binTree;
+                }
+                catch (std::runtime_error& e) { std::cerr << "Runtime error. " << e.what() << std::endl; }
                 break;
             }
 

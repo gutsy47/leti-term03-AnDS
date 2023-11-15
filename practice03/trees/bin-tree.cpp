@@ -44,21 +44,19 @@ std::vector<std::string> stringToTokens(std::string &str) {
         // Digit found
         if (isdigit(c)) {
             number += c;
-            continue;
         }
 
         // Single-char operators (look for char operators[8])
-        if (c == '(' || c == ')') {
+        else if (c == '(' || c == ')') {
             if (!number.empty()) {
                 tokens.push_back(number);
                 number.clear();
             }
             tokens.push_back(s);
-            continue;
         }
 
         // Unknown symbol error
-        throw std::runtime_error("Unknown symbol: " + s);
+        else throw std::runtime_error("Unknown symbol: " + s);
     }
     if (!number.empty()) tokens.push_back(number);
     return tokens;
@@ -67,6 +65,8 @@ std::vector<std::string> stringToTokens(std::string &str) {
 
 /// Bracket binary tree representation parser. Get the tokens and return the root ptr
 BinTree::Node* BinTree::parse(std::vector<std::string> &tokens) {
+    if (tokens.empty()) throw std::invalid_argument("Empty string");
+
     unsigned openParenthesis = 0; // "Stack" to store open parentheses, close ones ain't actually stored
     std::stack<Node*> nodeStack;  // Stack to store nodes
     Node *curr;
@@ -78,24 +78,47 @@ BinTree::Node* BinTree::parse(std::vector<std::string> &tokens) {
         }
 
         // Digit. Create new node and push it to the nodeStack
-        else if (isdigit(token[0])) {
+        else if (std::isdigit(token[0])) {
             nodeStack.push(new Node(std::stoi(token)));
         }
 
         // Close parenthesis. Get the last node and delete the open parenthesis
         else if (token[0] == ')') {
-            if (openParenthesis == 0) return nullptr;         // Close parenthesis without open one - error
-            if (openParenthesis == 1) return nodeStack.top(); // Last node in stack is the head of the tree
+            // Error handlers
+            if (openParenthesis == 0) throw std::runtime_error("Unclosed brace");
+            if (openParenthesis == 1 && (&token != &tokens.back())) throw std::runtime_error("Unclosed brace");
+            if (nodeStack.empty()) throw std::runtime_error("Invalid expression");
 
-            openParenthesis -= 1;   // Remove the top open parenthesis
-            curr = nodeStack.top(); // Get last node
-            nodeStack.pop();        // Remove it
+            // Last node in stack is the head of the tree
+            if (openParenthesis == 1 && &token == &tokens.back()) return nodeStack.top();
 
-            // Update the father node
-            if (!(nodeStack.top()->left)) nodeStack.top()->left = curr;
-            else nodeStack.top()->right = curr;
+
+            if (openParenthesis == nodeStack.size()) {
+                // In case with empty parenthesis stacks size wouldn't be equal
+                openParenthesis -= 1;
+                curr = nodeStack.top();
+                nodeStack.pop();
+
+                if (nodeStack.top()) {
+                    // Default case
+                    if (nodeStack.top()->left) nodeStack.top()->right = curr;
+                    else nodeStack.top()->left = curr;
+                } else {
+                    // Empty parenthesis case, insert to the right
+                    openParenthesis -= 1;
+                    nodeStack.pop();
+                    nodeStack.top()->right = curr;
+                }
+            } else {
+                if (!(nodeStack.top()) || nodeStack.top()->left)
+                    openParenthesis -= 1;    // Right empty parenthesis
+                else
+                    nodeStack.push(nullptr); // Left empty parenthesis
+            }
         }
     }
+
+    throw std::runtime_error("Unclosed brace");
 }
 
 /// Tree constructor based on bracket notation

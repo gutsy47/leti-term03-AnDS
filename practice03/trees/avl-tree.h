@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <queue>
+#include <stack>
 
 
 /**
@@ -30,7 +32,8 @@ private:
 
 public:
     // Constructors and destructors
-    AVLTree();    // Constructor
+    AVLTree();                                 // Constructor
+    explicit AVLTree(const std::vector<int>&); // Constructor from values
     ~AVLTree();   // Destructor
     void clear(); // Delete the nodes but not the tree
 
@@ -44,6 +47,12 @@ public:
     void insert(int);
     bool find(int);
     void remove(int);
+
+    // Traversals
+    void breadthFirstTraversal() const;
+    void preOrderTraversal() const;
+    void inOrderTraversal() const;
+    void postOrderTraversal() const;
 
 private:
     // Balance utils
@@ -62,6 +71,12 @@ private:
     void getVerticalOrder(const Node*, std::vector<std::vector<int>>&, int) const; // PrintHorizontal util
     void osHor(std::ostream&) const; // Print from U to D
     void osVert(std::ostream&, const Node*, std::string prefix = "", bool isLeft = false) const; // Print from L to R
+
+    // Traversal utils
+    void breadthFirstUtil(Node*) const;
+    void inOrderUtil(Node*) const;
+    void preOrderUtil(Node*) const;
+    void postOrderUtil(Node*) const;
 };
 
 #endif //ADS_AVL_TREE_H

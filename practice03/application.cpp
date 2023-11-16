@@ -44,14 +44,27 @@ int TApplication::execute() {
     }
 
     // Depth-first search
-    std::vector<int> values = binTree.depthFirstSearch();
-    std::cout << "  DFS: ";
+    std::vector<int> values = binTree.depthFirstTraversal();
+    std::cout << "  DFT: ";
     for (auto &el : values) std::cout << el << ' ';
     std::cout << "\n\n";
 
-    // Here we will work with the AVL tree. Empty yet
+    // Create the AVL tree from values of the binary tree
     std::cout << "\033[30;47m" << std::setw(width + 7) << std::setfill('-')
               << "AVL TREE" << std::setw(width + 4) << "\033[0m" << "\n";
+    AVLTree avlTree(values);
+    std::cout << "Tree:\n" << avlTree;
+
+    // Traversals
+    std::cout << "  BFT: ";
+    avlTree.breadthFirstTraversal();
+    std::cout << "\n   In: ";
+    avlTree.inOrderTraversal();
+    std::cout << "\n  Pre: ";
+    avlTree.preOrderTraversal();
+    std::cout << "\n Post: ";
+    avlTree.postOrderTraversal();
+    std::cout << std::endl;
 
     system("pause");
 

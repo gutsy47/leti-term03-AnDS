@@ -39,7 +39,7 @@ public:
     friend std::ostream& operator<< (std::ostream&, const BinTree&);
     BinTree& operator= (const BinTree&);
 
-    std::vector<int> depthFirstSearch();
+    std::vector<int> depthFirstTraversal();
 
 private:
     Node* parse(std::vector<std::string>&);
@@ -48,7 +48,7 @@ private:
     void deleteTree(Node*);
     void osVert(std::ostream&, const Node*, std::string prefix = "", bool isLeft = false) const;
 
-    void depthFirstSearchUtil(Node*, std::vector<int>&);
+    void depthFirstUtil(Node*, std::vector<int>&);
 };
 
 

@@ -194,17 +194,17 @@ std::ostream&operator<< (std::ostream &os, const BinTree &tree) {
 
 
 /// Depth-first search util
-void BinTree::depthFirstSearchUtil(Node *head, std::vector<int> &values) {
+void BinTree::depthFirstUtil(Node *head, std::vector<int> &values) {
     if (!head) return;
     values.push_back(head->key);
-    depthFirstSearchUtil(head->left, values);
-    depthFirstSearchUtil(head->right, values);
+    depthFirstUtil(head->left, values);
+    depthFirstUtil(head->right, values);
 }
 
 
 /// Depth-first search
-std::vector<int> BinTree::depthFirstSearch() {
+std::vector<int> BinTree::depthFirstTraversal() {
     std::vector<int> values;
-    depthFirstSearchUtil(root, values);
+    depthFirstUtil(root, values);
     return values;
 }

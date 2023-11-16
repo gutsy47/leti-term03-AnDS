@@ -20,6 +20,12 @@ AVLTree::AVLTree() {
 }
 
 
+/// Tree constructor from vector of values
+AVLTree::AVLTree(const std::vector<int> &values) {
+    root = nullptr;
+    for (const auto &el : values) insert(el);
+}
+
 /// Tree destructor
 AVLTree::~AVLTree() {
     deleteTree(root);
@@ -300,4 +306,117 @@ std::ostream&operator<< (std::ostream &os, const AVLTree &tree) {
     else tree.osHor(os);
     os << std::endl;
     return os;
+}
+
+
+/// Breadth First Traversal util
+void AVLTree::breadthFirstUtil(AVLTree::Node *head) const {
+    if (!head) return;
+
+    std::queue<Node*> q;
+    q.push(head);
+    while (!q.empty()) {
+        Node *curr = q.front();
+        q.pop();
+
+        std::cout << curr->key << ' ';
+
+        if (curr->left) q.push(curr->left);
+        if (curr->right) q.push(curr->right);
+    }
+}
+
+/// Breadth First Traversal
+void AVLTree::breadthFirstTraversal() const {
+    breadthFirstUtil(root);
+}
+
+
+/// In Order Traversal util
+void AVLTree::inOrderUtil(AVLTree::Node *head) const {
+    if (!head) return;
+
+    std::stack<Node*> s;
+    Node *curr = head;
+    while (curr || !s.empty()) {
+        while (curr) {
+            s.push(curr);
+            curr = curr->left;
+        }
+
+        curr = s.top();
+        s.pop();
+
+        std::cout << curr->key << ' ';
+
+        curr = curr->right;
+    }
+}
+
+
+/// In Order Traversal
+void AVLTree::inOrderTraversal() const {
+    inOrderUtil(root);
+}
+
+
+/// Pre Order Traversal util
+void AVLTree::preOrderUtil(AVLTree::Node *head) const {
+    if (!head) return;
+
+    std::stack<Node*> s;
+    Node *curr = head;
+
+    while (curr || !s.empty()) {
+        while (curr) {
+            std::cout << curr->key << ' ';
+
+            s.push(curr);
+            curr = curr->left;
+        }
+
+        curr = s.top();
+        s.pop();
+
+        curr = curr->right;
+    }
+}
+
+
+/// Pre Order Traversal
+void AVLTree::preOrderTraversal() const {
+    preOrderUtil(root);
+}
+
+
+/// Post Order Traversal util
+void AVLTree::postOrderUtil(AVLTree::Node *head) const {
+    if (!head) return;
+
+    std::stack<Node*> s;
+    Node *curr = head;
+    Node *last = nullptr;
+
+    while (curr || !s.empty()) {
+        while (curr) {
+            s.push(curr);
+            curr = curr->left;
+        }
+
+        Node *top = s.top();
+        if (!top->right || top->right == last) {
+            std::cout << top->key << ' ';
+
+            s.pop();
+            last = top;
+        } else {
+            curr = top->right;
+        }
+    }
+}
+
+
+/// Post Order Traversal
+void AVLTree::postOrderTraversal() const {
+    postOrderUtil(root);
 }

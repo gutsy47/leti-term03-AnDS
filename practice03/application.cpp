@@ -3,6 +3,7 @@
 #include "trees/avl-tree.h"
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 
 
@@ -18,19 +19,39 @@ int TApplication::execute() {
     std::string input;
     std::getline(iFile, input);
     iFile.close();
+
+    int width = int(input.length()) / 2;
+    std::cout << "\033[30;47m" << std::setw(width + 9) << std::setfill('-')
+              << "BINARY TREE" << std::setw(width + 2) << "\033[0m" << "\n";
     std::cout << "Input: " << input << std::endl;
 
     // Parse the input into the binary tree
     BinTree binTree;
     try {
         binTree = BinTree(input);
-        std::cout << "Parsed binary tree:\n";
+        std::cout << " Tree:\n";
         std::cout << binTree;
     }
-    catch (std::invalid_argument& e) { std::cerr << "Invalid argument. " << e.what() << std::endl; }
-    catch (std::runtime_error& e) { std::cerr << "Runtime error. " << e.what() << std::endl; }
+    catch (std::invalid_argument& e) {
+        std::cerr << "Invalid argument. " << e.what() << std::endl;
+        system("pause");
+        return -1;
+    }
+    catch (std::runtime_error& e) {
+        std::cerr << "Runtime error. " << e.what() << std::endl;
+        system("pause");
+        return -2;
+    }
 
-    // Some code uses binTree
+    // Depth-first search
+    std::vector<int> values = binTree.depthFirstSearch();
+    std::cout << "  DFS: ";
+    for (auto &el : values) std::cout << el << ' ';
+    std::cout << "\n\n";
+
+    // Here we will work with the AVL tree. Empty yet
+    std::cout << "\033[30;47m" << std::setw(width + 7) << std::setfill('-')
+              << "AVL TREE" << std::setw(width + 4) << "\033[0m" << "\n";
 
     system("pause");
 

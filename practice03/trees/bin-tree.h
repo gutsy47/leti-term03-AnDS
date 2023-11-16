@@ -1,6 +1,7 @@
 #ifndef ADS_BIN_TREE_H
 #define ADS_BIN_TREE_H
 
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -14,8 +15,7 @@
 /**
  * @class BinTree
  * @brief Implementation of Binary Tree
- * Implement an Binary Tree with the following functionality:
- * left or right insertion and depth-first search, output to ostream
+ * Implement an Binary Tree with the depth-first search, output to ostream only functionality
  * @example main.cpp
  */
 class BinTree {
@@ -39,18 +39,17 @@ public:
     friend std::ostream& operator<< (std::ostream&, const BinTree&);
     BinTree& operator= (const BinTree&);
 
-    void depthFirstSearch();
+    std::vector<int> depthFirstSearch();
 
 private:
     Node* parse(std::vector<std::string>&);
     Node* copyTree(const Node*);
 
     void deleteTree(Node*);
-    void osVert(std::ostream&, const Node*, std::string prefix = "", bool isLeft = false) const; // Print from L to R
+    void osVert(std::ostream&, const Node*, std::string prefix = "", bool isLeft = false) const;
 
-    void depthFirstSearchUtil(Node*);
+    void depthFirstSearchUtil(Node*, std::vector<int>&);
 };
-
 
 
 #endif //ADS_BIN_TREE_H

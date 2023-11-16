@@ -23,11 +23,7 @@ BinTree::BinTree() {
 }
 
 
-/**
- * Split expression string to vector of tokens. Operators: ( )  0-9. WS-friendly
- * @param[in] str - The expression
- * @return vector<string> tokens
- */
+/// Split expression string to vector of string-tokens. Supports: ( ), 0-9. WS-friendly
 std::vector<std::string> stringToTokens(std::string &str) {
     // Empty expression handler
     if (str.empty()) throw std::invalid_argument("Empty string");
@@ -194,4 +190,21 @@ std::ostream&operator<< (std::ostream &os, const BinTree &tree) {
     tree.osVert(os, tree.root);
     os << std::endl;
     return os;
+}
+
+
+/// Depth-first search util
+void BinTree::depthFirstSearchUtil(Node *head, std::vector<int> &values) {
+    if (!head) return;
+    values.push_back(head->key);
+    depthFirstSearchUtil(head->left, values);
+    depthFirstSearchUtil(head->right, values);
+}
+
+
+/// Depth-first search
+std::vector<int> BinTree::depthFirstSearch() {
+    std::vector<int> values;
+    depthFirstSearchUtil(root, values);
+    return values;
 }

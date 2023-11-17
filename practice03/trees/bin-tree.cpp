@@ -88,7 +88,6 @@ BinTree::Node* BinTree::parse(std::vector<std::string> &tokens) {
             // Last node in stack is the head of the tree
             if (openParenthesis == 1 && &token == &tokens.back()) return nodeStack.top();
 
-
             if (openParenthesis == nodeStack.size()) {
                 // In case with empty parenthesis stacks size wouldn't be equal
                 openParenthesis -= 1;

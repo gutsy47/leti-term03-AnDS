@@ -162,7 +162,7 @@ AVLTree::Node *AVLTree::removeUtil(Node *head, int k) {
             delete temp;
         } else {
             // Node with two children
-            Node *temp = head;
+            Node *temp = head->right;
             while (temp->left) temp = temp->left;
             head->key = temp->key;
             head->right = removeUtil(head->right, temp->key);

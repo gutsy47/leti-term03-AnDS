@@ -3,8 +3,10 @@ project(coursework)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(
+add_executable(coursework
+        main.cpp
         application.h
         application.cpp
-        main.cpp
+        structures/graph.cpp
+        structures/graph.h
 )

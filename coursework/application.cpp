@@ -129,6 +129,11 @@ int TApplication::execute() {
     for (auto *el : bfs) std::cout << *el << ' ';
     std::cout << '\n';
 
-    system("pause");
+    // Sort by weight
+    std::vector<Edge> sorted = graph.getSortedByWeight();
+    std::cout << "Edges sorted by weight:\n";
+    for (auto &edge : sorted)
+        std::cout << "     " << edge << '\n';
+
     return 0;
 }

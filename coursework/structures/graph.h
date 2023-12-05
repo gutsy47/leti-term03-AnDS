@@ -24,10 +24,28 @@ public:
 };
 
 
+/// Edge between two vertices. Represented as <first> - <weight> - <second>
+class Edge {
+    friend class Graph;
+
+private:
+    int weight;
+    Vertex *u;
+    Vertex *v;
+
+public:
+    Edge(int, Vertex*, Vertex*);
+    [[nodiscard]] int getWeight() const;
+    Vertex * getU();
+    Vertex * getV();
+    friend std::ostream& operator<< (std::ostream&, Edge&);
+    bool operator< (const Edge&) const;
+};
+
+
 /// Weighted undirected graph. Contains the <amount> and <vertices>
 class Graph {
 private:
-    int amount;                    // Total amount of the vertices
     std::vector<Vertex*> vertices; // Store each vertex
 
 public:
@@ -38,6 +56,7 @@ public:
     // Basic methods
     std::vector<Vertex*> depthFirstSearch();
     std::vector<Vertex*> breadthFirstSearch();
+    std::vector<Edge> getSortedByWeight();
 };
 
 

@@ -22,24 +22,59 @@ std::ostream& operator<< (std::ostream& os, const Vertex& vertex) {
 }
 
 
+/// Edge constructor
+Edge::Edge(int weight, Vertex *first, Vertex *second) {
+    this->weight = weight;
+    u = first;
+    v = second;
+}
+
+
+/// Access to the weight
+int Edge::getWeight() const {
+    return weight;
+}
+
+
+/// Access to the first vertex
+Vertex* Edge::getU() {
+    return u;
+}
+
+
+/// Access to the second vertex
+Vertex* Edge::getV() {
+    return v;
+}
+
+
+/// Print the edge
+std::ostream& operator<< (std::ostream& os, Edge& edge) {
+    os << *(edge.getU()) << " <-" << edge.getWeight() << "-> " << *(edge.getV());
+    return os;
+}
+
+/// Compare the weight of two edges, used for sorting
+bool Edge::operator< (const Edge& other) const{
+    return weight < other.getWeight();
+}
+
+
 /// Default constructor for empty graph
 Graph::Graph() {
     vertices = {};
-    amount = 0;
 }
 
 
 /// Graph constructor from adjacency matrix
 Graph::Graph(const std::vector<char> &names, const std::vector<std::vector<int>> &weights) {
-    amount = (int) names.size();
-
     // Create all vertices
     for (auto &name : names)
         vertices.push_back(new Vertex(name));
 
     // Add edges between the vertices
-    for (int i = 0; i < amount; ++i)
-        for (int j = 0; j < amount; ++j)
+    for (int i = 0; i < vertices.size(); ++i)
+        for (int j = 0; j < vertices.size(); ++j)
             if (i != j && weights[i][j] != 0)
                 vertices[i]->setEdge(vertices[j], weights[i][j]);
 }
@@ -74,6 +109,7 @@ std::vector<Vertex*> Graph::depthFirstSearch() {
 }
 
 
+/// Return a vector of vertices in BFS order
 std::vector<Vertex*> Graph::breadthFirstSearch() {
     if (vertices.empty()) return {};
 
@@ -98,5 +134,19 @@ std::vector<Vertex*> Graph::breadthFirstSearch() {
         }
     }
 
+    return result;
+}
+
+
+/// Sort the vertices by their weight
+std::vector<Edge> Graph::getSortedByWeight() {
+    if (vertices.empty()) return {};
+
+    std::vector<Edge> result;
+    for (auto *vertex : vertices)
+        for (auto &edge : vertex->edges)
+            if (vertex < edge.first) result.emplace_back(edge.second, vertex, edge.first);
+
+    std::sort(result.begin(), result.end());
     return result;
 }

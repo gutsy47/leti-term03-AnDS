@@ -53,10 +53,13 @@ public:
     Graph();
     Graph(const std::vector<char>&, const std::vector<std::vector<int>>&);
 
-    // Basic methods
+    // Searches
     std::vector<Vertex*> depthFirstSearch();
     std::vector<Vertex*> breadthFirstSearch();
+
+    // Kruskal's algorithm
     std::vector<Edge> getSortedByWeight();
+    std::vector<Edge> getMST();
 };
 
 

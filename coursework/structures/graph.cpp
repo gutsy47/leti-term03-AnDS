@@ -1,4 +1,6 @@
 #include "graph.h"
+#include "dsu.h"
+
 
 
 /// Vertex constructor
@@ -50,9 +52,10 @@ Vertex* Edge::getV() {
 
 /// Print the edge
 std::ostream& operator<< (std::ostream& os, Edge& edge) {
-    os << *(edge.getU()) << " <-" << edge.getWeight() << "-> " << *(edge.getV());
+    os << *(edge.getU()) << " <--> " << *(edge.getV()) << "  w = " << edge.getWeight();
     return os;
 }
+
 
 /// Compare the weight of two edges, used for sorting
 bool Edge::operator< (const Edge& other) const{
@@ -149,4 +152,30 @@ std::vector<Edge> Graph::getSortedByWeight() {
 
     std::sort(result.begin(), result.end());
     return result;
+}
+
+
+/// Get Minimum Spanning Tree using Kruskal's algorithm
+std::vector<Edge> Graph::getMST() {
+    if (vertices.empty()) return {}; // Nothing to do
+
+    // Create disjoint set
+    DisjointSet dsu;
+    for (auto *vertex : vertices) dsu.makeSet(vertex);
+
+    // Create vector of sorted by weight edges
+    std::vector<Edge> edges = getSortedByWeight();
+
+    // Create Minimum Spanning Tree
+    std::vector<Edge> mst;
+    for (auto &edge : edges) {
+        Vertex* u = edge.getU();
+        Vertex* v = edge.getV();
+        if (dsu.find(u) != dsu.find(v)) {
+            dsu.unite(u, v);
+            mst.push_back(edge);
+        }
+    }
+
+    return mst;
 }

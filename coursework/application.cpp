@@ -135,5 +135,23 @@ int TApplication::execute() {
     for (auto &edge : sorted)
         std::cout << "     " << edge << '\n';
 
+    // Minimum Spanning Tree using Kruskal's algorithm
+    std::vector<Edge> mst = graph.getMST();
+    std::cout << "Minimum Spanning Tree:\n";
+    int weight = 0;
+    for (auto &edge : mst) {
+        std::cout << "     " << edge << '\n';
+        weight += edge.getWeight();
+    }
+    std::cout << "     Full weight = " << weight << '\n';
+
+    // Write answer to the output file
+    std::ofstream oFile(std::getenv("OUTPUT_FILE_PATH"));
+    if (!oFile.is_open()) throw std::runtime_error("FileNotFound: Couldn't open 'output.txt' file");
+    for (auto &edge: mst) oFile << *(edge.getU()) << ' ' << *(edge.getV()) << '\n';
+    oFile << weight;
+    oFile.close();
+    std::cout << "Answer has been written to the `output.txt` file\n";
+
     return 0;
 }

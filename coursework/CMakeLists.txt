@@ -9,4 +9,6 @@ add_executable(coursework
         application.cpp
         structures/graph.cpp
         structures/graph.h
+        structures/dsu.cpp
+        structures/dsu.h
 )

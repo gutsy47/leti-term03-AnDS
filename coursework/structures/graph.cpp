@@ -17,6 +17,12 @@ void Vertex::setEdge(Vertex *vertex, int weight) {
 }
 
 
+/// Return char name of the vertex
+char Vertex::getName() const {
+    return _name;
+}
+
+
 /// Print the vertex`s name
 std::ostream& operator<< (std::ostream& os, const Vertex& vertex) {
     if (vertex._name) os << vertex._name;

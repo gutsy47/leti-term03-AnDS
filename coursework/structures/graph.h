@@ -20,6 +20,7 @@ private:
 public:
     explicit Vertex(char);
     void setEdge(Vertex*, int);
+    [[nodiscard]] char getName() const;
     friend std::ostream& operator<< (std::ostream&, const Vertex&);
 };
 

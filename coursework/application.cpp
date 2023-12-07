@@ -137,6 +137,18 @@ int TApplication::execute() {
 
     // Minimum Spanning Tree using Kruskal's algorithm
     std::vector<Edge> mst = graph.getMST();
+
+    // Sort by vertex name
+    std::sort(
+        mst.begin(), mst.end(),
+        [](Edge& a, Edge& b) {
+            std::string aNames = std::string(1, a.getU()->getName()) + std::string(1, a.getV()->getName());
+            std::string bNames = std::string(1, b.getU()->getName()) + std::string(1, b.getV()->getName());
+            return aNames < bNames;
+        }
+    );
+
+    // Print MST
     std::cout << "Minimum Spanning Tree:\n";
     int weight = 0;
     for (auto &edge : mst) {
